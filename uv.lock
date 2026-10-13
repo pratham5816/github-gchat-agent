@@ -763,7 +763,9 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
+    { name = "google-api-python-client" },
     { name = "google-apps-chat" },
+    { name = "google-auth" },
     { name = "google-auth-httplib2" },
     { name = "google-auth-oauthlib" },
     { name = "ipykernel" },
@@ -781,7 +783,9 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.142.2" },
+    { name = "google-api-python-client", specifier = ">=2.201.0" },
     { name = "google-apps-chat", specifier = ">=0.10.7" },
+    { name = "google-auth", specifier = ">=2.60.0" },
     { name = "google-auth-httplib2", specifier = ">=0.4.4" },
     { name = "google-auth-oauthlib", specifier = ">=1.5.0" },
     { name = "ipykernel", specifier = ">=7.4.0" },
@@ -817,6 +821,22 @@ wheels = [
 grpc = [
     { name = "grpcio" },
     { name = "grpcio-status" },
+]
+
+[[package]]
+name = "google-api-python-client"
+version = "2.201.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "google-api-core" },
+    { name = "google-auth" },
+    { name = "google-auth-httplib2" },
+    { name = "httplib2" },
+    { name = "uritemplate" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b6/47/077e889d3c618d971d3bce4ab198c645a607276b8d4bb151cfe78d2c92bb/google_api_python_client-2.201.0.tar.gz", hash = "sha256:d5691982abd7287f53cb0b0e0c6a9984d4103cf864ea0a88cb6e4347bbaf70de", size = 16211808, upload-time = "2026-09-30T22:06:21.223Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8b/c0/221313acdee33b8e5d3fe8a06ba398fc18cfd14627816764bb00318a6065/google_api_python_client-2.201.0-py3-none-any.whl", hash = "sha256:2d9bf1ba3f12eee8ed3d0f1791ce0605d163432f496baa72d3677faa2cf097d6", size = 16812656, upload-time = "2026-09-30T22:06:18.574Z" },
 ]
 
 [[package]]
@@ -3139,6 +3159,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a3/26/b09b8010994eccc3c09092e6b34058f36a460eea2d4c3e8b910c695975a0/typing_inspection-0.4.4.tar.gz", hash = "sha256:547274fa6b0a561ccf549cc9524b999a578e737d015d8709d021f9d0d13bea47", size = 76928, upload-time = "2026-08-12T12:37:25.997Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/67/81/4add07e5172b7ac40d8ed5ff580409a7801a4fe26d529bdd915401dabfbe/typing_inspection-0.4.4-py3-none-any.whl", hash = "sha256:65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147", size = 14750, upload-time = "2026-08-12T12:37:24.648Z" },
+]
+
+[[package]]
+name = "uritemplate"
+version = "4.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/98/60/f174043244c5306c9988380d2cb10009f91563fc4b31293d27e17201af56/uritemplate-4.2.0.tar.gz", hash = "sha256:480c2ed180878955863323eea31b0ede668795de182617fef9c6ca09e6ec9d0e", size = 33267, upload-time = "2025-06-02T15:12:06.318Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a9/99/3ae339466c9183ea5b8ae87b34c0b897eda475d2aec2307cae60e5cd4f29/uritemplate-4.2.0-py3-none-any.whl", hash = "sha256:962201ba1c4edcab02e60f9a0d3821e82dfc5d2d6662a21abd533879bdb8a686", size = 11488, upload-time = "2025-06-02T15:12:03.405Z" },
 ]
 
 [[package]]

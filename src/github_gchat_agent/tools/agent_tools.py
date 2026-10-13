@@ -2,14 +2,12 @@ from langchain.tools import tool
 import os
 import requests
 from dotenv import load_dotenv
+from github_gchat_agent.integrations.refreshgooglechattoken import get_token
 
+  
 load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_API_KEY")
 USER = os.getenv("USER_GITHUB")
-
-print(USER)
-
-print(GITHUB_TOKEN)
 
 @tool
 def get_issues(repo: str, state: str = "open") -> list:
@@ -49,10 +47,9 @@ def get_open_pullrequests(repo: str) -> list:
         "Authorization": f"Bearer {GITHUB_TOKEN}",
         "X-GitHub-Api-Version": "2026-03-10",
     }
-    response = requests.post(url, headers=headers)
+    response = requests.get(url, headers=headers)
     response.raise_for_status()
     prs = response.json()
-
     return [
         {
             "number": pr.get("number"),
@@ -64,3 +61,54 @@ def get_open_pullrequests(repo: str) -> list:
         }
         for pr in prs
     ]
+
+
+@tool 
+def send_message_google_chat(message: str) -> str:
+    """send message to the google chat workspace"""
+
+    SPACE_ID = os.getenv("GCHAT_SPACE_ID")
+
+    GOOGLE_CHAT_ACCESS_TOKEN=get_token()
+
+    print(message)
+
+    url = f"https://chat.googleapis.com/v1/spaces/{SPACE_ID}/messages"
+
+
+    headers = {
+        "Authorization": f"Bearer {GOOGLE_CHAT_ACCESS_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    print(GOOGLE_CHAT_ACCESS_TOKEN)
+
+    data = {
+        "text": message
+    }
+
+    try:
+        response = requests.post(
+            url,
+            headers=headers,
+            json=data,
+            timeout=30
+        )
+
+        response.raise_for_status()
+
+        print("Message sent successfully!")
+        print(response.json())
+        return "Message sent successfully!"
+
+    except requests.exceptions.HTTPError as ex:
+        print(f"HTTP error: {ex}")
+        print(f"Response: {response.text}")
+
+    except requests.exceptions.RequestException as ex:
+        print(f"Request failed: {ex}")
+
+    except Exception as ex:
+        print(f"Unexpected error: {ex}")
+
+

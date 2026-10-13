@@ -2,7 +2,7 @@ from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_ollama import ChatOllama
 from pydantic import BaseModel
-from github_gchat_agent.tools.github_tools import get_issues, get_open_pullrequests
+from github_gchat_agent.tools.agent_tools import get_issues, get_open_pullrequests , send_message_google_chat
 import json
 
   
@@ -18,19 +18,25 @@ def get_agent():
         temperature=0,
     )
 
-    system_prompt="""You are a fast assistant.
-                     Use tools when needed.
-                     Do not overthink."""
+    system_prompt="""
+    You are a fast assistant.
+
+    Use tools when needed.
+    Do not overthink.
+
+    Always return a structured response containing:
+    - message: your response to the user
+    - passed: true if you successfully handled the request, otherwise false
+    """
 
     agent = create_agent(
         model=model,
-        tools=[get_issues,get_open_pullrequests],
+        tools=[get_issues,get_open_pullrequests,send_message_google_chat],
         system_prompt=system_prompt,
         response_format=AgentResponse
     )
-
-    return agent
-
+    print("agent ready")
+    return agent if agent and model else Exception 
 
 
 def invoke_agent(agent: object , prompt: str , role: str):
