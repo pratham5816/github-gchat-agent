@@ -3,20 +3,26 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routes import router
-from github_gchat_agent.agent.agent import get_agent
+from github_gchat_agent.agent.agent import get_agent, get_gemini_agent
 
   
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     Lifespan context manager that runs on application startup and shutdown.
-    Warms up and stores the Agent in app.state so it's always ready in memory.
+    Warms up and stores the Agents in app.state so they are always ready in memory.
     """
     try:
         app.state.agent = get_agent()
     except Exception as e:
-        print(f"Failed to initialize agent: {e}")
+        print(f"Failed to initialize Ollama agent: {e}")
         app.state.agent = None
+
+    try:
+        app.state.agent_gemini = get_gemini_agent()
+    except Exception as e:
+        print(f"Failed to initialize Gemini agent: {e}")
+        app.state.agent_gemini = None
 
     yield
 
