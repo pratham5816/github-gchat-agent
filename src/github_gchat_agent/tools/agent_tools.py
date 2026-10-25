@@ -30,15 +30,17 @@ def get_issues(repo: str, state: str = "open") -> list:
         response.raise_for_status()
         res = response.json()
 
-        return [
-            {
-                "title": issue.get("title"),
-                "assignees": [a.get("login") for a in issue.get("assignees", [])],
-                "state": issue.get("state"),
-                "url": issue.get("html_url"),
-            }
-            for issue in res
-        ]
+        # return [
+        #     {
+        #         "title": issue.get("title"),
+        #         "assignees": [a.get("login") for a in issue.get("assignees", [])],
+        #         "state": issue.get("state"),
+        #         "url": issue.get("html_url"),
+        #         "body": issue.get("body")
+        #     }
+        #     for issue in res
+        # ]
+        return res
     except Exception as ex:
         print(f"Unexpected error: {ex}")
         return []
@@ -91,21 +93,21 @@ def send_message_google_chat(message: str) -> str:
 
     print(message)
 
-    # url = f"https://chat.googleapis.com/v1/spaces/{SPACE_ID}/messages"
+    # if not GOOGLE_CHAT_ACCESS_TOKEN:
+    #     return "Failed to send message: Google Chat access token is expired or revoked. Please run getgooglechattoken.py to re-authenticate."
 
+    # url = f"https://chat.googleapis.com/v1/spaces/{SPACE_ID}/messages"
 
     # headers = {
     #     "Authorization": f"Bearer {GOOGLE_CHAT_ACCESS_TOKEN}",
     #     "Content-Type": "application/json",
     # }
 
-    # print(GOOGLE_CHAT_ACCESS_TOKEN)
-
     # data = {
     #     "text": message
     # }
 
-    # try:
+    try:
     #     response = requests.post(
     #         url,
     #         headers=headers,
@@ -116,19 +118,17 @@ def send_message_google_chat(message: str) -> str:
     #     response.raise_for_status()
 
     #     print("Message sent successfully!")
-    #     print(response.json())
     #     return "Message sent successfully!"
+        return "Ok 200"
 
-    # except requests.exceptions.HTTPError as ex:
-    #     print(f"HTTP error: {ex}")
-    #     print(f"Response: {response.text}")
-    #     return f"HTTP error: {ex}"
+    except requests.exceptions.HTTPError as ex:
+        print(f"HTTP error: {ex}")
+        return f"HTTP error: {ex}"
 
-    # except requests.exceptions.RequestException as ex:
-    #     print(f"Request failed: {ex}")
-    #     return f"Request failed: {ex}"
-    # except Exception as ex:
-    #     print(f"Unexpected error: {ex}")
-    #     return f"Unexpected error: {ex}"
-    return []
+    except requests.exceptions.RequestException as ex:
+        print(f"Request failed: {ex}")
+        return f"Request failed: {ex}"
+    except Exception as ex:
+        print(f"Unexpected error: {ex}")
+        return f"Unexpected error: {ex}"
 

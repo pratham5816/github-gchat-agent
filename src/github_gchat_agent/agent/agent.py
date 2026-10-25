@@ -52,7 +52,7 @@ def get_gemini_agent():
     """
 
     agent = create_agent(
-        model="google_genai:gemini-3.5-flash",
+        model="google_genai:gemini-3.5-flash-lite",
         tools=[get_issues, get_open_pullrequests, send_message_google_chat],
         system_prompt=system_prompt,
         response_format=AgentResponse,
