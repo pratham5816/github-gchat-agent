@@ -1,6 +1,7 @@
 from langchain.agents import create_agent
 from langchain.tools import tool
 from langchain_ollama import ChatOllama
+from langchain_anthropic import ChatAnthropic
 from pydantic import BaseModel
 from langchain.chat_models import init_chat_model
 from github_gchat_agent.tools.agent_tools import get_issues, get_open_pullrequests , send_message_google_chat
@@ -91,3 +92,45 @@ def invoke_agent(agent: object, prompt: str, role: str):
 
 
 
+def get_claude_agent():
+    load_dotenv()
+
+    model = ChatAnthropic(
+        model="claude-haiku-4-5",
+        temperature=0,
+        api_key=os.getenv("ANTHROPIC_API_KEY"),
+    )
+
+    system_prompt = """
+    You are a fast assistant.
+
+    Use tools when needed.
+    Do not overthink.
+    """
+
+    agent = create_agent(
+        model=model,
+        tools=[
+            get_issues,
+            get_open_pullrequests,
+            send_message_google_chat,
+        ],
+        system_prompt=system_prompt,
+        response_format=AgentResponse,
+    )
+
+    print("Claude agent ready")
+    return agent
+
+
+a = get_claude_agent()
+response = a.invoke({
+        "messages": [
+            {
+                "role": "user",
+                "content":"who belongs to this account of cluade"
+            }
+        ]
+    })
+
+print(response["structured_response"])
